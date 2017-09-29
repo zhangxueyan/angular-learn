@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>angular</title>
+  <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+  <style>
+  	.person-name.active{
+  		font-weight: bold;
+  		color: red;
+  	}
+  </style>
+</head>
+<body>
+	<div ng-app="myApp">
+		<p>{{name}}</p>
+		<p ng-if="isShow">hello world</p>
+		<p ng-if="!isShow">hello human</p>
+		<button ng-click="someAction()">click</button>
+
+		<div ng-controller="myCtrl">
+			
+            <div class="repeat">
+            	<p ng-repeat="item in things" ng-class="{active:item.isActive}" 
+            	class="person-name" ng-click="toggle(item)">{{item.name}}</p>
+            </div>
+
+            <div class="repeat">
+            	<p ng-repeat="(key,value) in object">{{key}}{{value}}</p>
+            </div>
+             
+             <p ng-init="greeting='hello world'" ng-bind="greeting"></p>
+             <p ng-init="greeting='hello human'" ng-cloak>{{greeting}}</p>
+
+             <p ng-bind-template="{{name}}{{age}}"></p>
+
+             <select ng-model="city" ng-options="city.name for city in cities">
+             	<option value="">Choose City</option>
+             </select>
+             <p>best city:{{city.name }}</p>
+
+             
+		</div>
+
+
+	</div>
+<script>
+var app = angular.module('myApp', []);
+app.run(function($rootScope){
+	console.log($rootScope)
+	$rootScope.name="coco"
+	$rootScope.age=36
+	$rootScope.isShow = true
+	$rootScope.someAction =function(){
+		$rootScope.isShow = !$rootScope.isShow;
+	}
+})
+
+app.controller('myCtrl',function($scope){
+	$scope.things= [
+	 {name:'aa',isActive:true},
+	 {name:"bb",isActive:false}
+	]
+	$scope.toggle =function(item){
+         item.isActive = !item.isActive
+	}
+	$scope.object={
+		name:"coco",
+		age:25
+	}
+	$scope.cities = [
+		{name: 'Seattle'},
+		{name: 'San Francisco'},
+		{name: 'Chicago'},
+		{name: 'New York'},
+		{name: 'Boston'}
+	];
+
+})
+
+</script>
+</body>
+</html

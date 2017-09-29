@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>shopping-car</title>
+  <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+  <style>
+    table{
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #666;
+    }
+    td{
+     border: 1px solid #666; 
+     text-align: center;
+     cursor: pointer;
+    }
+  </style>
+</head>
+<body ng-app="myApp">
+ <div ng-controller="myCtrl">
+    <table>
+      <thead>
+        <tr>
+          <td>名称</td>
+          <td>单品数量</td>
+          <td>增加</td>
+          <td>减少</td>
+          <td>单价</td>
+          <td>单品总价</td>
+        </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in items">
+        <td>{{item.name}}</td>
+        <td>{{item.singleNum}}</td>
+        <td>{{item.singlePrice|currency}}</td>
+        <td ng-click="add(item)">+</td>
+        <td ng-click="red(item)">-</td>
+        <td>{{item.singleNum*item.singlePrice|currency}}</td>
+      </tr>
+      <tr>
+        <td>总数量</td>
+        <td colspan="2">{{Total.number}}</td>
+        <td>总价格</td>
+        <td colspan="2">{{Total.price|currency}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <p ng-click="changeName()">{{name|uppercase}}</p>
+    <p>{{age}}</p>
+ </div>
+ <div ng-controller="secondCtrl">
+   <p>{{time}}</p>
+ </div>
+ <script>
+   var app = angular.module('myApp',[]);
+   app.controller('myCtrl',function($scope,$http){
+     $scope.Total={}
+     $scope.items=[
+     {name:'apple',singleNum:1,singlePrice:10},
+     {name:'bannar',singleNum:1,singlePrice:10},
+     {name:'orange',singleNum:1,singlePrice:10},
+     {name:'grape',singleNum:1,singlePrice:10}
+     ]
+     $scope.name = "coco"
+     $scope.age = 20
+     $scope.add=function(item){
+      item.singleNum++
+     }
+     $scope.red=function(item){
+     if(item.singleNum>0){
+      item.singleNum--
+      }
+     }
+     //计算总价格和总数量的
+     $scope.$watch(function(){
+      var TotalNum = 0;
+      $scope.items.forEach(function(item){
+       TotalNum = TotalNum + item.singleNum
+     })
+      $scope.Total.number = TotalNum
+
+      var TotalPrice = 0;
+      $scope.items.forEach(function(item){
+       TotalPrice = TotalPrice + item.singlePrice*item.singleNum
+     })
+      $scope.Total.price = TotalPrice
+     })
+
+     // 请求服务
+     $http.get("https://zhangxueyan.github.io/private/test.txt").then(function (response) {
+        console.log(response.data)
+     });
+   })
+   app.controller('secondCtrl',function($scope,$interval){
+     $scope.time=new Date().toLocaleTimeString();
+     $interval(function () {
+        $scope.time=new Date().toLocaleTimeString();
+     }, 1000);
+   })
+
+ </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>angular</title>
+  <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body ng-app='myApp'>
+<div  ng-controller="myCtrl">
+	{{myUrl}}
+	{{hex}}
+</div>
+
+<div  ng-controller="secondCtrl">
+  <select name="" id="" ng-model="selectedSite">
+  	<option value="{{item.url}}" ng-repeat="item in sites">{{item.site}}</option>
+  </select>
+  <p>{{selectedSite}}</p>
+
+
+  <input type="text" ng-model="message">
+  <p>{{message}}</p>
+
+  <form action="">
+  	<input type="radio" ng-model="myVar" value="dogs">Dogs
+  	<input type="radio" ng-model="myVar" value="tuts">Tuts
+  	<input type="radio" ng-model="myVar" value="cars">Cars
+  </form>
+
+  <!-- 全选和单选效果 -->
+  <label for=""><input type="checkbox" ng-model="selectAll" ng-click="selAll()">全选</label>
+  <label for="" ng-repeat="item in items">
+  	<input type="checkbox" ng-model="item.isSelect" ng-click="selSingle(item)">{{item.name}}
+  </label>
+</div>
+
+<script>
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', function($scope, hexafy) {
+		$scope.hex = hexafy.myFunc(255);
+	});
+
+	app.service('hexafy',function(){
+	    this.myFunc = function (x) {
+	        return x.toString(2);
+	    }
+	})
+
+	app.controller('secondCtrl',function($scope){
+		$scope.sites = [
+			{site : "Google", url : "http://www.google.com"},
+			{site : "Runoob", url : "http://www.runoob.com"},
+			{site : "Taobao", url : "http://www.taobao.com"}
+		];
+		$scope.message="hello world"
+
+		$scope.selectAll = true
+		$scope.items=[
+		{name:'AAA',isSelect:false},
+		{name:'BBB',isSelect:false},
+		{name:'CCC',isSelect:false}
+		]
+		$scope.selAll =function(){
+			$scope.selectAll = true
+		}
+		$scope.selSingle=function(item){
+           item.isSelect = !item.isSelect
+		}
+		$scope.$watch(function(){
+			$scope.selectAll = $scope.items.filter(function(item){
+				return item.isSelect == true
+			}).length == $scope.items.length
+		})
+	})
+</script>
+</body>
+</html
