@@ -30,7 +30,7 @@
   <!-- 全选和单选效果 -->
   <label for=""><input type="checkbox" ng-model="selectAll" ng-click="selAll()">全选</label>
   <label for="" ng-repeat="item in items">
-  	<input type="checkbox" ng-model="item.isSelect" ng-click="selSingle(item)">{{item.name}}
+  	<input type="checkbox" ng-model="item.isSelect">{{item.name}}
   </label>
 </div>
 
@@ -54,17 +54,17 @@
 		];
 		$scope.message="hello world"
 
-		$scope.selectAll = true
+		$scope.selectAll = false
 		$scope.items=[
 		{name:'AAA',isSelect:false},
 		{name:'BBB',isSelect:false},
 		{name:'CCC',isSelect:false}
 		]
 		$scope.selAll =function(){
-			$scope.selectAll = true
-		}
-		$scope.selSingle=function(item){
-           item.isSelect = !item.isSelect
+			$scope.selectAll = !$scope.selectAll
+			$scope.items.forEach(function(item){
+              item.isSelect=$scope.selectAll
+			})
 		}
 		$scope.$watch(function(){
 			$scope.selectAll = $scope.items.filter(function(item){
